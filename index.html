@@ -1,28 +1,326 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thanedphon</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0f172a;
-      color: #f1f5f9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      text-align: center;
-    }
-    h1 { font-size: 3rem; margin-bottom: 0.5rem; }
-    p { color: #94a3b8; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thanedphon — Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@500;700;900&family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #FBF7EE;
+    --paper-shadow: #EFE7D6;
+    --ink: #1F2A44;
+    --ink-soft: #4A5573;
+    --stamp: #B23A2E;
+    --gold: #A9791F;
+    --muted: #8B8172;
+    --line: #D8CFBB;
+  }
+ 
+  *{ box-sizing: border-box; }
+ 
+  html,body{
+    margin:0;
+    padding:0;
+    min-height:100vh;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Sarabun', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+ 
+  body{
+    background-image:
+      repeating-linear-gradient(180deg, transparent 0 27px, rgba(31,42,68,0.035) 27px 28px),
+      radial-gradient(circle at 12% 8%, rgba(178,58,46,0.06), transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(169,121,31,0.08), transparent 45%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 40px 18px;
+  }
+ 
+  .stage{
+    width:100%;
+    max-width: 420px;
+  }
+ 
+  /* eyebrow above the card */
+  .eyebrow{
+    text-align:center;
+    font-size: 12px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    opacity:0;
+    animation: fadeUp 0.6s ease forwards 0.05s;
+  }
+ 
+  /* the card */
+  .card{
+    position:relative;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    border-radius: 4px;
+    padding: 38px 30px 28px;
+    box-shadow:
+      6px 6px 0 var(--paper-shadow),
+      7px 7px 0 var(--ink);
+    transform: rotate(-0.6deg);
+    opacity:0;
+    animation: fadeUp 0.7s ease forwards 0.15s;
+  }
+ 
+  /* stamp in the corner */
+  .stamp{
+    position:absolute;
+    top: -18px;
+    right: -14px;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    border: 2px dashed var(--stamp);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform: rotate(14deg);
+    background: var(--paper);
+  }
+  .stamp span{
+    font-family:'Noto Serif Thai', serif;
+    font-weight:900;
+    font-size: 10px;
+    color: var(--stamp);
+    letter-spacing: 0.08em;
+    text-align:center;
+    line-height:1.25;
+    text-transform: uppercase;
+  }
+ 
+  .id-row{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom: 22px;
+  }
+ 
+  .avatar{
+    flex: 0 0 auto;
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    background: linear-gradient(160deg, var(--ink) 0%, var(--ink-soft) 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: var(--paper);
+    font-family:'Noto Serif Thai', serif;
+    font-weight:700;
+    font-size: 26px;
+    border: 3px solid var(--paper);
+    outline: 1.5px solid var(--ink);
+  }
+ 
+  .id-text .kicker{
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight:600;
+    margin-bottom:4px;
+  }
+ 
+  .id-text h1{
+    font-family:'Noto Serif Thai', serif;
+    font-weight:800;
+    font-size: 28px;
+    line-height:1.15;
+    margin:0 0 4px;
+    color: var(--ink);
+  }
+ 
+  .id-text p{
+    margin:0;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+ 
+  .tear{
+    border: none;
+    border-top: 1.5px dashed var(--line);
+    margin: 22px 0 20px;
+    position:relative;
+  }
+  .tear::before, .tear::after{
+    content:"";
+    position:absolute;
+    top:-7px;
+    width:14px;
+    height:14px;
+    background: white;
+    border-radius:50%;
+    border: 1.5px solid var(--ink);
+  }
+  .tear::before{ left:-30px; }
+  .tear::after{ right:-30px; }
+ 
+  .links{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+ 
+  .link-btn{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    text-decoration:none;
+    color: var(--ink);
+    background: white;
+    border: 1.5px solid var(--ink);
+    border-radius: 3px;
+    padding: 13px 16px;
+    position:relative;
+    overflow:hidden;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    opacity:0;
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .link-btn:nth-child(1){ animation-delay: 0.32s; }
+  .link-btn:nth-child(2){ animation-delay: 0.40s; }
+  .link-btn:nth-child(3){ animation-delay: 0.48s; }
+  .link-btn:nth-child(4){ animation-delay: 0.56s; }
+ 
+  .link-btn:hover{
+    transform: translate(-2px,-2px);
+    box-shadow: 3px 3px 0 var(--ink);
+    background: #FFFDF8;
+  }
+  .link-btn:active{
+    transform: translate(0,0);
+    box-shadow: none;
+  }
+ 
+  .link-btn .ico{
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: white;
+  }
+  .link-btn .txt{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    line-height:1.25;
+  }
+  .link-btn .txt b{ font-size:14.5px; font-weight:700; }
+  .link-btn .txt small{ font-size:11.5px; color: var(--muted); font-weight:400; }
+  .link-btn .arrow{
+    color: var(--muted);
+    font-size: 16px;
+    transition: transform 0.18s ease;
+  }
+  .link-btn:hover .arrow{ transform: translateX(3px); }
+ 
+  .ig{ background: linear-gradient(135deg,#f58529,#dd2a7b 45%,#8134af 80%); }
+  .fb{ background: #1877F2; }
+  .gh{ background: #1F2A44; }
+  .ln{ background: #06C755; }
+ 
+  .footer-stamp{
+    text-align:center;
+    margin-top: 26px;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    opacity:0;
+    animation: fadeUp 0.5s ease forwards 0.62s;
+  }
+  .footer-stamp span{ color: var(--stamp); }
+ 
+  @keyframes fadeUp{
+    from{ opacity:0; transform: translateY(10px) rotate(-0.6deg); }
+    to{ opacity:1; transform: translateY(0) rotate(-0.6deg); }
+  }
+  .link-btn{ animation-name: fadeUpLink; }
+  @keyframes fadeUpLink{
+    from{ opacity:0; transform: translateY(8px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+ 
+  @media (max-width: 420px){
+    .card{ padding: 32px 20px 24px; }
+    .tear::before{ left:-24px; }
+    .tear::after{ right:-24px; }
+  }
+ 
+  @media (prefers-reduced-motion: reduce){
+    .card,.eyebrow,.link-btn,.footer-stamp{ animation: none !important; opacity:1 !important; }
+  }
+</style>
 </head>
 <body>
-  <h1>สวัสดีครับ 👋</h1>
-  <p>ยินดีต้อนรับสู่เว็บไซต์ของ Thanedphon</p>
+  <div class="stage">
+    <div class="eyebrow">นักเรียน · ประเทศไทย</div>
+ 
+    <div class="card">
+      <div class="stamp"><span>OFFICIAL<br>PROFILE</span></div>
+ 
+      <div class="id-row">
+        <div class="avatar">ธพ</div>
+        <div class="id-text">
+          <div class="kicker">Thanedphon</div>
+          <h1>ธเนศพล</h1>
+          <p>ยินดีต้อนรับ กดลิงก์ด้านล่างเพื่อไปหาผมได้เลย</p>
+        </div>
+      </div>
+ 
+      <hr class="tear">
+ 
+      <div class="links">
+        <a class="link-btn" href="https://instagram.com/" target="_blank" rel="noopener">
+          <span class="ico ig">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="6" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="4.2" stroke="white" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.2" fill="white"/></svg>
+          </span>
+          <span class="txt"><b>Instagram</b><small>@thanedphon</small></span>
+          <span class="arrow">→</span>
+        </a>
+ 
+        <a class="link-btn" href="https://facebook.com/" target="_blank" rel="noopener">
+          <span class="ico fb">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M13.5 22v-8.6h2.9l.4-3.4h-3.3V7.8c0-1 .3-1.7 1.7-1.7h1.8V3.1C16.7 3 15.6 3 14.4 3c-2.6 0-4.4 1.6-4.4 4.5v2.5H7v3.4h3v8.6h3.5z"/></svg>
+          </span>
+          <span class="txt"><b>Facebook</b><small>Thanedphon</small></span>
+          <span class="arrow">→</span>
+        </a>
+ 
+        <a class="link-btn" href="https://github.com/thanedphon" target="_blank" rel="noopener">
+          <span class="ico gh">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.8 9.6.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.4-3.4-1.4-.4-1.2-1.1-1.5-1.1-1.5-1-.6.1-.6.1-.6 1.1.1 1.6 1.1 1.6 1.1.9 1.6 2.5 1.2 3.1.9.1-.7.4-1.2.6-1.5-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.5-1.3.1-2.8 0 0 .8-.3 2.7 1a9.3 9.3 0 0 1 4.9 0c1.9-1.3 2.7-1 2.7-1 .6 1.5.2 2.5.1 2.8.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 3.9-1.3 6.8-5.1 6.8-9.6C22 6.6 17.5 2 12 2z"/></svg>
+          </span>
+          <span class="txt"><b>GitHub</b><small>thanedphon</small></span>
+          <span class="arrow">→</span>
+        </a>
+ 
+        <a class="link-btn" href="#" target="_blank" rel="noopener">
+          <span class="ico ln">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.5 2 2 5.9 2 10.7c0 3 1.9 5.7 4.8 7.3-.2.8-.8 2.7-.9 3.1 0 0-.1.4.2.5.2.1.5 0 .5 0 .7-.1 3-2 4.2-2.9.7.1 1.5.2 2.2.2 5.5 0 10-3.9 10-8.7C23 5.9 18.5 2 12 2z"/></svg>
+          </span>
+          <span class="txt"><b>Line</b><small>เพิ่มเพื่อนได้ที่นี่</small></span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+ 
+    <div class="footer-stamp"><span>●</span> thanedphon.github.io <span>●</span></div>
+  </div>
 </body>
 </html>
